@@ -13,16 +13,28 @@ public class Usuario {
     private String nombre;
     private int edad;
     private String usuario;
+    private String contra;
     private ArrayList<playlist>playlist;
     private ArrayList<String>favoritos;
 
-    public Usuario(String nombre, int edad, String usuario, ArrayList<playlist> playlist, ArrayList<String> favoritos) {
+    public Usuario(String nombre, int edad, String usuario, String contra) {
         this.nombre = nombre;
         this.edad = edad;
         this.usuario = usuario;
+        this.contra = contra;
         this.playlist = playlist;
         this.favoritos = favoritos;
     }
+
+    public String getContra() {
+        return contra;
+    }
+
+    public void setContra(String contra) {
+        this.contra = contra;
+    }
+
+    
 
     public String getNombre() {
         return nombre;
@@ -66,8 +78,10 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" + "nombre=" + nombre + ", edad=" + edad + ", usuario=" + usuario + ", playlist=" + playlist + ", favoritos=" + favoritos + '}';
+        return "Usuario{" + "nombre=" + nombre + ", edad=" + edad + ", usuario=" + usuario + ", contra=" + contra + ", playlist=" + playlist + ", favoritos=" + favoritos + '}';
     }
+
+    
     
     
     
