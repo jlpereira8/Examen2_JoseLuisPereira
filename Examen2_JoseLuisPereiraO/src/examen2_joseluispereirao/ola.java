@@ -44,6 +44,9 @@ public class ola extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jt_olabb = new javax.swing.JTree();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jl_canciones = new javax.swing.JList<>();
+        jButton6 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -59,6 +62,9 @@ public class ola extends javax.swing.JFrame {
         bt_registra = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         tf_edad = new javax.swing.JSpinner();
+        Explorar = new javax.swing.JPopupMenu();
+        anadir_cancion = new javax.swing.JMenuItem();
+        favs = new javax.swing.JMenuItem();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel7 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
@@ -147,7 +153,18 @@ public class ola extends javax.swing.JFrame {
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Albums");
         jt_olabb.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jt_olabb.setComponentPopupMenu(Explorar);
         jScrollPane1.setViewportView(jt_olabb);
+
+        jl_canciones.setModel(new DefaultListModel());
+        jScrollPane3.setViewportView(jl_canciones);
+
+        jButton6.setText("---->");
+        jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton6MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -155,15 +172,25 @@ public class ola extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton6)
+                .addGap(177, 177, 177))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Explorar", jPanel2);
@@ -314,6 +341,17 @@ public class ola extends javax.swing.JFrame {
                 .addComponent(bt_registra)
                 .addContainerGap())
         );
+
+        anadir_cancion.setText("Agregar Cancion");
+        anadir_cancion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                anadir_cancionActionPerformed(evt);
+            }
+        });
+        Explorar.add(anadir_cancion);
+
+        favs.setText("Enviar a Favoritos");
+        Explorar.add(favs);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -870,7 +908,7 @@ public class ola extends javax.swing.JFrame {
             cc_artista.setEnabled(true);
             cc_duracion.setEnabled(true);
             cc_genero.setEditable(true);
-            cc_genero.setEnabled(true);          
+            cc_genero.setEnabled(true);
             cc_nombre.setEditable(true);
             cc_nombre.setEnabled(true);
         }
@@ -886,39 +924,95 @@ public class ola extends javax.swing.JFrame {
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
         // String nombre, String artista, double duracion, String genero
-        String wombo=(String)cb_album.getSelectedItem();
-        int e = (int) cc_duracion.getValue();
-        songs.add(new Canciones(cc_nombre.getText(), cc_artista.getText(), e, cc_genero.getText()));
+        String wombo = (String) cb_album.getSelectedItem();
+        DefaultTreeModel modeloARBOL = (DefaultTreeModel) jt_olabb.getModel();
+        DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modeloARBOL.getRoot();
+        //obtenera la persona a guardar
+        DefaultListModel modeloLISTA = (DefaultListModel) jl_canciones.getModel();
+         int e = (int) cc_duracion.getValue();
+        String nombre="";
+        String artista="";
         for (Albums c : album) {
             if (c.getNombre().equals(wombo)) {
-                c.setCanciones(songs);
+                nombre=c.getNombre();
+                artista=c.getArtista();              
             }
         }
-        DefaultTreeModel m = (DefaultTreeModel) jt_olabb.getModel();//porque el ()
-        DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) m.getRoot();
-        for (Albums a : album) {
-            if(wombo.equals(a.getNombre())){
-            nodo_persona = new DefaultMutableTreeNode(
-                new Albums(a.getNombre(),a.getArtista()));
-               
+        int centinela = -1;
+        //que hace el for
+        for (int i = 0; i < raiz.getChildCount(); i++) {
+            if (raiz.getChildAt(i).toString().equals(nombre)) {
+                DefaultMutableTreeNode p = new DefaultMutableTreeNode(
+                        new Albums(nombre,
+                                artista));
+                ((DefaultMutableTreeNode) raiz.getChildAt(i)).add(p);
+                centinela = 1;
+            }
         }
+        if (centinela == -1) {
+            DefaultMutableTreeNode n = new DefaultMutableTreeNode(nombre);
+            DefaultMutableTreeNode p = new DefaultMutableTreeNode(new Canciones(cc_nombre.getText(), cc_artista.getText(), e, cc_genero.getText()));
+            n.add(p);
+            raiz.add(n);
         }
-        DefaultMutableTreeNode songas;
-        songas = new DefaultMutableTreeNode(new Canciones(cc_nombre.getText(), cc_artista.getText(), e, cc_genero.getText()));
-        nodo_persona.add(songas);
-        raiz.add(nodo_persona);
-        m.reload();//que pez?
-        JOptionPane.showMessageDialog(this, "Album registrado");
-        
+        modeloARBOL.reload();
+
+
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
         //String nombre, String artista, ArrayList<Canciones> canciones
         album.add(new Albums(a_nombre.getText(), a_nombre.getText()));
-        cb_album.addItem(a_nombre.getText());
+        ArrayList<String>ver=new ArrayList();
+        ver.add(a_nombre.getText());
+        int aux=0;
+        for (int i = 0; i < ver.size(); i++) {
+           if( ver.get(i).equals(a_nombre.getText())){
+               aux=69;
+           }
+        }
+        if (aux==0) {
+            cb_album.addItem(a_nombre.getText());
+        }
+        
         aux++;
         JOptionPane.showMessageDialog(this, "Cancion registrada");
     }//GEN-LAST:event_jButton5MouseClicked
+
+    private void anadir_cancionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anadir_cancionActionPerformed
+        // TODO add your handling code here:
+        DefaultTreeModel modeloarbol = (DefaultTreeModel) jt_olabb.getModel();
+        DefaultMutableTreeNode p = (DefaultMutableTreeNode) jt_olabb.getLastSelectedPathComponent();
+
+
+    }//GEN-LAST:event_anadir_cancionActionPerformed
+
+    private void jButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseClicked
+        // TODO add your handling code here:
+        if (jl_canciones.getSelectedIndex() >= 0) {// verificar si teiene una persona seleccionada
+            DefaultTreeModel modeloARBOL = (DefaultTreeModel) jt_olabb.getModel();
+            DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modeloARBOL.getRoot();
+            DefaultListModel modeloLISTA = (DefaultListModel) jl_canciones.getModel();
+            String nombre;
+            String artista;
+            double duracion;
+            String genero;
+            nombre = ((Canciones) modeloLISTA.get(jl_canciones.getSelectedIndex())).getNombre();
+            artista = ((Canciones) modeloLISTA.get(jl_canciones.getSelectedIndex())).getArtista();
+            duracion = ((Canciones) modeloLISTA.get(jl_canciones.getSelectedIndex())).getDuracion();
+            genero = ((Canciones) modeloLISTA.get(jl_canciones.getSelectedIndex())).getGenero();
+            for (int i = 0; i < raiz.getChildCount(); i++) {
+                DefaultMutableTreeNode p = new DefaultMutableTreeNode(
+                        new Canciones(nombre,
+                                artista, duracion, genero));
+                ((DefaultMutableTreeNode) raiz.getChildAt(i)).add(p);
+
+            }
+            modeloARBOL.reload();
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay personas seleccionadas");
+        }
+    }//GEN-LAST:event_jButton6MouseClicked
 
     /**
      * @param args the command line arguments
@@ -963,8 +1057,10 @@ public class ola extends javax.swing.JFrame {
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPopupMenu Explorar;
     private javax.swing.JTextField a_artista;
     private javax.swing.JTextField a_nombre;
+    private javax.swing.JMenuItem anadir_cancion;
     private javax.swing.JButton bt_registra;
     private javax.swing.JButton bt_registra1;
     private javax.swing.JComboBox<String> cb_album;
@@ -972,11 +1068,13 @@ public class ola extends javax.swing.JFrame {
     private javax.swing.JSpinner cc_duracion;
     private javax.swing.JTextField cc_genero;
     private javax.swing.JTextField cc_nombre;
+    private javax.swing.JMenuItem favs;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1021,9 +1119,11 @@ public class ola extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JDialog jd_registrar;
+    private javax.swing.JList<String> jl_canciones;
     private javax.swing.JList<String> jt_listar_usuarios;
     private javax.swing.JTree jt_olabb;
     private javax.swing.JDialog principal;
