@@ -42,6 +42,8 @@ public class ola extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jt_olabb = new javax.swing.JTree();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -143,15 +145,25 @@ public class ola extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Inicio", jPanel1);
 
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Albums");
+        jt_olabb.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jScrollPane1.setViewportView(jt_olabb);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 701, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 409, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Explorar", jPanel2);
@@ -853,7 +865,6 @@ public class ola extends javax.swing.JFrame {
         DefaultComboBoxModel modelo = new DefaultComboBoxModel(ap.getListaPersona().toArray());
         wombo_combo.setModel(modelo);
         if (aux > 0) {
-            cb_album.setEditable(true);
             cb_album.setEnabled(true);
             cc_artista.setEditable(true);
             cc_artista.setEnabled(true);
@@ -876,20 +887,37 @@ public class ola extends javax.swing.JFrame {
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
         // String nombre, String artista, double duracion, String genero
         String wombo=(String)cb_album.getSelectedItem();
-        double e = (double) cc_duracion.getValue();
+        int e = (int) cc_duracion.getValue();
         songs.add(new Canciones(cc_nombre.getText(), cc_artista.getText(), e, cc_genero.getText()));
         for (Albums c : album) {
             if (c.getNombre().equals(wombo)) {
                 c.setCanciones(songs);
             }
         }
+        DefaultTreeModel m = (DefaultTreeModel) jt_olabb.getModel();//porque el ()
+        DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) m.getRoot();
+        for (Albums a : album) {
+            if(wombo.equals(a.getNombre())){
+            nodo_persona = new DefaultMutableTreeNode(
+                new Albums(a.getNombre(),a.getArtista()));
+               
+        }
+        }
+        DefaultMutableTreeNode songas;
+        songas = new DefaultMutableTreeNode(new Canciones(cc_nombre.getText(), cc_artista.getText(), e, cc_genero.getText()));
+        nodo_persona.add(songas);
+        raiz.add(nodo_persona);
+        m.reload();//que pez?
+        JOptionPane.showMessageDialog(this, "Album registrado");
+        
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
         //String nombre, String artista, ArrayList<Canciones> canciones
-        album.add(new Albums(a_nombre.getText(), a_nombre.getText(), null));
+        album.add(new Albums(a_nombre.getText(), a_nombre.getText()));
         cb_album.addItem(a_nombre.getText());
         aux++;
+        JOptionPane.showMessageDialog(this, "Cancion registrada");
     }//GEN-LAST:event_jButton5MouseClicked
 
     /**
@@ -991,11 +1019,13 @@ public class ola extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JDialog jd_registrar;
     private javax.swing.JList<String> jt_listar_usuarios;
+    private javax.swing.JTree jt_olabb;
     private javax.swing.JDialog principal;
     private javax.swing.JTextField re_contra;
     private javax.swing.JTextField re_contra1;

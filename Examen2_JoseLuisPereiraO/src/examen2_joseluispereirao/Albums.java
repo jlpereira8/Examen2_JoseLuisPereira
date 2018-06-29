@@ -14,10 +14,9 @@ public class Albums {
     private String artista;
     private ArrayList<Canciones>canciones;
 
-    public Albums(String nombre, String artista, ArrayList<Canciones> canciones) {
+    public Albums(String nombre, String artista) {
         this.nombre = nombre;
         this.artista = artista;
-        this.canciones = canciones;
     }
 
     public String getNombre() {
@@ -46,7 +45,7 @@ public class Albums {
 
     @Override
     public String toString() {
-        return "Albums{" + "nombre=" + nombre + ", artista=" + artista + ", canciones=" + canciones + '}';
+        return nombre ;
     }
     
     

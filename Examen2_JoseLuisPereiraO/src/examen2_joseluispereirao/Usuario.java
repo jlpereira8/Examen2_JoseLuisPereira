@@ -3,20 +3,22 @@
  */
 package examen2_joseluispereirao;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author j0c3lwiz
  */
-public class Usuario {
+public class Usuario implements Serializable{
     private String nombre;
     private int edad;
     private String usuario;
     private String contra;
     private ArrayList<playlist>playlist;
     private ArrayList<String>favoritos;
-
+    
+ private static final long SerialVersionUID=777L;
     public Usuario(String nombre, int edad, String usuario, String contra) {
         this.nombre = nombre;
         this.edad = edad;
@@ -33,8 +35,6 @@ public class Usuario {
     public void setContra(String contra) {
         this.contra = contra;
     }
-
-    
 
     public String getNombre() {
         return nombre;
@@ -78,7 +78,7 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" + "nombre=" + nombre + ", edad=" + edad + ", usuario=" + usuario + ", contra=" + contra + ", playlist=" + playlist + ", favoritos=" + favoritos + '}';
+        return nombre;
     }
 
     
