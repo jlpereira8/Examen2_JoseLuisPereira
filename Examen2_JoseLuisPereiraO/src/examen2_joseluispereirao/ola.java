@@ -42,11 +42,7 @@ public class ola extends javax.swing.JFrame {
                     if (seg > 59) {
                         seg = 0;
                         min++;
-                    }
-                    if (min > 59) {
-                        min = 0;
-                        hora++;
-                    }
+                    }                 
                     String s = "", m = "", h = "", d = "";
                     if (seg < 10) {
                         s = "0" + seg;
@@ -57,17 +53,14 @@ public class ola extends javax.swing.JFrame {
                         m = "0" + min;
                     } else {
                         m = "" + min;
-                    }
-                    if (deci < 10) {
-                        d = "0" + deci;
-                    } else {
-                        d = "" + deci;
-                    }
+                    }                 
                     deci++;
                     hilo.sleep(9);
-                    asd.setText(m + ":" + s + ":" + d);
-                    if (m == String.valueOf(tiempo_p.getText())) {
-
+                    asd.setText(m + ":" + s );
+                    if (m.equals(String.valueOf(tiempo_p.getText()))) {
+                        hilo.suspend();
+                        suspendido = true;
+                        //JOptionPane.showMessageDialog(this, "Fin de la reproduccion");
                     }
                 }
             } catch (InterruptedException ie) {
@@ -141,6 +134,7 @@ public class ola extends javax.swing.JFrame {
         jButton10 = new javax.swing.JButton();
         jScrollPane7 = new javax.swing.JScrollPane();
         asd = new javax.swing.JTextArea();
+        finallbb = new javax.swing.JLabel();
         play = new javax.swing.JPopupMenu();
         playb = new javax.swing.JMenuItem();
         jTabbedPane2 = new javax.swing.JTabbedPane();
@@ -576,7 +570,9 @@ public class ola extends javax.swing.JFrame {
                                 .addComponent(jLabel40)
                                 .addGap(53, 53, 53)
                                 .addComponent(jLabel38)
-                                .addGap(46, 46, 46)
+                                .addGap(26, 26, 26)
+                                .addComponent(finallbb, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(olabb, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel41)))
@@ -595,7 +591,8 @@ public class ola extends javax.swing.JFrame {
                     .addComponent(jLabel38)
                     .addComponent(olabb, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel37)
-                    .addComponent(jLabel40))
+                    .addComponent(jLabel40)
+                    .addComponent(finallbb, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(66, 66, 66)
                 .addComponent(jLabel41)
                 .addGap(4, 4, 4)
@@ -1318,6 +1315,7 @@ public class ola extends javax.swing.JFrame {
             genero = ((Canciones) modeloLISTA.get(jl_canciones.getSelectedIndex())).getGenero();
             DefaultMutableTreeNode p = new DefaultMutableTreeNode(new Canciones(nombre, artista, duracion, genero));
             raiz.add(p);
+            JOptionPane.showMessageDialog(this, "Enviado a favoritos");
             modeloARBOL.reload();
         } else {
             JOptionPane.showMessageDialog(this, "No hay personas seleccionadas");
@@ -1410,7 +1408,8 @@ public class ola extends javax.swing.JFrame {
             int op = (int) cancion_seleccionada.getDuracion();
             String sa = String.valueOf(op);
             System.out.println(sa);
-            tiempo_p.setText(sa);
+            tiempo_p.setText("0" + sa);
+            finallbb.setText(cancion_seleccionada.getNombre());
         }
     }//GEN-LAST:event_jt_favsMouseClicked
 
@@ -1480,6 +1479,7 @@ public class ola extends javax.swing.JFrame {
     private javax.swing.JTextField cc_genero;
     private javax.swing.JTextField cc_nombre;
     private javax.swing.JMenuItem eliminar_canciosn;
+    private javax.swing.JLabel finallbb;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
