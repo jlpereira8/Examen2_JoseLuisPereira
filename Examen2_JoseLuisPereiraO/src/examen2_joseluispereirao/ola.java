@@ -25,7 +25,56 @@ public class ola extends javax.swing.JFrame {
      */
     public ola() {
         initComponents();
+        seg = 0;
+        min = 0;
+        hora = 0;
+        deci = 0;
+        con = 1;
     }
+    Thread hilo = new Thread() {
+        public void run() {
+            try {
+                while (true) {
+                    if (deci > 99) {
+                        deci = 0;
+                        seg++;
+                    }
+                    if (seg > 59) {
+                        seg = 0;
+                        min++;
+                    }
+                    if (min > 59) {
+                        min = 0;
+                        hora++;
+                    }
+                    String s = "", m = "", h = "", d = "";
+                    if (seg < 10) {
+                        s = "0" + seg;
+                    } else {
+                        s = "" + seg;
+                    }
+                    if (min < 10) {
+                        m = "0" + min;
+                    } else {
+                        m = "" + min;
+                    }
+                    if (deci < 10) {
+                        d = "0" + deci;
+                    } else {
+                        d = "" + deci;
+                    }
+                    deci++;
+                    hilo.sleep(9);
+                    asd.setText(m + ":" + s + ":" + d);
+                    if (m == String.valueOf(tiempo_p.getText())) {
+
+                    }
+                }
+            } catch (InterruptedException ie) {
+                JOptionPane.showMessageDialog(rootPane, ie.getMessage());
+            }
+        }
+    };
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -80,6 +129,20 @@ public class ola extends javax.swing.JFrame {
         Eliminar_alb = new javax.swing.JMenuItem();
         pop_playlist = new javax.swing.JPopupMenu();
         eliminar_canciosn = new javax.swing.JMenuItem();
+        jDialog1 = new javax.swing.JDialog();
+        jLabel36 = new javax.swing.JLabel();
+        tiempo_p = new javax.swing.JLabel();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        jLabel38 = new javax.swing.JLabel();
+        olabb = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        jLabel40 = new javax.swing.JLabel();
+        jLabel41 = new javax.swing.JLabel();
+        jButton10 = new javax.swing.JButton();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        asd = new javax.swing.JTextArea();
+        play = new javax.swing.JPopupMenu();
+        playb = new javax.swing.JMenuItem();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel7 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
@@ -322,6 +385,11 @@ public class ola extends javax.swing.JFrame {
 
         treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Favoritas");
         jt_favs.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jt_favs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jt_favsMouseClicked(evt);
+            }
+        });
         jScrollPane5.setViewportView(jt_favs);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -466,6 +534,86 @@ public class ola extends javax.swing.JFrame {
             }
         });
         pop_playlist.add(eliminar_canciosn);
+
+        jLabel36.setText("Tiempo");
+
+        jLabel38.setText("Cancion");
+
+        jLabel37.setText(":");
+
+        jLabel40.setText("00");
+
+        jLabel41.setText("Actual");
+
+        jButton10.setText("Reproducir");
+        jButton10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton10MouseClicked(evt);
+            }
+        });
+
+        asd.setColumns(20);
+        asd.setRows(5);
+        jScrollPane7.setViewportView(asd);
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog1Layout.createSequentialGroup()
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jDialog1Layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jDialog1Layout.createSequentialGroup()
+                                .addComponent(jLabel36)
+                                .addGap(18, 18, 18)
+                                .addComponent(tiempo_p, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(52, 52, 52)
+                                .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel40)
+                                .addGap(53, 53, 53)
+                                .addComponent(jLabel38)
+                                .addGap(46, 46, 46)
+                                .addComponent(olabb, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel41)))
+                    .addGroup(jDialog1Layout.createSequentialGroup()
+                        .addGap(251, 251, 251)
+                        .addComponent(jButton10)))
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog1Layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel36)
+                    .addComponent(tiempo_p, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel38)
+                    .addComponent(olabb, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel37)
+                    .addComponent(jLabel40))
+                .addGap(66, 66, 66)
+                .addComponent(jLabel41)
+                .addGap(4, 4, 4)
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addComponent(jButton10)
+                .addGap(38, 38, 38))
+        );
+
+        playb.setText("Reproducir Cancion");
+        playb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playbActionPerformed(evt);
+            }
+        });
+        play.add(playb);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1143,8 +1291,8 @@ public class ola extends javax.swing.JFrame {
             genero = ((Canciones) modeloLISTA.get(jl_canciones2.getSelectedIndex())).getGenero();
             for (int i = 0; i < raiz.getChildCount(); i++) {
                 DefaultMutableTreeNode p = new DefaultMutableTreeNode(
-                    new Canciones(nombre,
-                        artista, duracion, genero));
+                        new Canciones(nombre,
+                                artista, duracion, genero));
                 ((DefaultMutableTreeNode) raiz.getChildAt(i)).add(p);
 
             }
@@ -1192,8 +1340,8 @@ public class ola extends javax.swing.JFrame {
             genero = ((Canciones) modeloLISTA.get(jl_canciones.getSelectedIndex())).getGenero();
             for (int i = 0; i < raiz.getChildCount(); i++) {
                 DefaultMutableTreeNode p = new DefaultMutableTreeNode(
-                    new Canciones(nombre,
-                        artista, duracion, genero));
+                        new Canciones(nombre,
+                                artista, duracion, genero));
                 ((DefaultMutableTreeNode) raiz.getChildAt(i)).add(p);
 
             }
@@ -1222,13 +1370,59 @@ public class ola extends javax.swing.JFrame {
             String nom = JOptionPane.showInputDialog(this, "Ingrese la posicion");
             DefaultMutableTreeNode p = (DefaultMutableTreeNode) jt_playlist.getLastSelectedPathComponent();
             DefaultTreeModel m = (DefaultTreeModel) jt_playlist.getModel();
-            int bb=Integer.parseInt(nom);
+            int bb = Integer.parseInt(nom);
             DefaultMutableTreeNode nodosuma = (DefaultMutableTreeNode) p.getChildAt(bb);
             m.removeNodeFromParent(nodosuma);
             m.reload();
 
         }
     }//GEN-LAST:event_eliminar_canciosnActionPerformed
+
+    private void playbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playbActionPerformed
+        // TODO add your handling code here:
+        jDialog1.setModal(true);
+        jDialog1.pack();
+        jDialog1.setLocationRelativeTo(this);
+        jDialog1.setVisible(true);
+        int op = (int) cancion_seleccionada.getDuracion();
+        String sa = String.valueOf(op);
+        System.out.println(sa);
+        tiempo_p.setText(sa);
+        olabb.setText(cancion_seleccionada.getNombre());
+    }//GEN-LAST:event_playbActionPerformed
+
+    private void jt_favsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_favsMouseClicked
+        // TODO add your handling code here:
+        if (evt.isMetaDown()) {
+            int row = jt_favs.getClosestRowForLocation(evt.getX(), evt.getY());
+            jt_favs.setSelectionRow(row);
+            Object v1 = jt_favs.getSelectionPath().getPathComponent(row);
+            nodo_seleccionado = (DefaultMutableTreeNode) v1;
+            if (nodo_seleccionado.getUserObject() instanceof Canciones) {
+                cancion_seleccionada = (Canciones) nodo_seleccionado.getUserObject();
+                play.show(evt.getComponent(), evt.getX(), evt.getY());
+            } else if (nodo_seleccionado.getUserObject() instanceof String) {
+
+                //menu_pop2.show(evt.getComponent(), evt.getX(), evt.getY());
+                //per_sel=nodo_seleccionado.getUserObject();
+            }
+            System.out.println(cancion_seleccionada.getDuracion());
+            int op = (int) cancion_seleccionada.getDuracion();
+            String sa = String.valueOf(op);
+            System.out.println(sa);
+            tiempo_p.setText(sa);
+        }
+    }//GEN-LAST:event_jt_favsMouseClicked
+
+    private void jButton10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton10MouseClicked
+        // TODO add your handling code here:
+        if (!suspendido) {
+            hilo.start();
+            suspendido = true;
+        } else {
+            hilo.resume();
+        }
+    }//GEN-LAST:event_jButton10MouseClicked
 
     /**
      * @param args the command line arguments
@@ -1277,6 +1471,7 @@ public class ola extends javax.swing.JFrame {
     private javax.swing.JPopupMenu Explorar;
     private javax.swing.JTextField a_artista;
     private javax.swing.JTextField a_nombre;
+    private javax.swing.JTextArea asd;
     private javax.swing.JButton bt_registra;
     private javax.swing.JButton bt_registra1;
     private javax.swing.JComboBox<String> cb_album;
@@ -1286,6 +1481,7 @@ public class ola extends javax.swing.JFrame {
     private javax.swing.JTextField cc_nombre;
     private javax.swing.JMenuItem eliminar_canciosn;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -1294,6 +1490,7 @@ public class ola extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1323,7 +1520,12 @@ public class ola extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1341,12 +1543,14 @@ public class ola extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JDialog jd_registrar;
@@ -1356,6 +1560,9 @@ public class ola extends javax.swing.JFrame {
     private javax.swing.JList<String> jt_listar_usuarios;
     private javax.swing.JTree jt_olabb;
     private javax.swing.JTree jt_playlist;
+    private javax.swing.JLabel olabb;
+    private javax.swing.JPopupMenu play;
+    private javax.swing.JMenuItem playb;
     private javax.swing.JPopupMenu pop_playlist;
     private javax.swing.JDialog principal;
     private javax.swing.JTextField re_contra;
@@ -1372,6 +1579,7 @@ public class ola extends javax.swing.JFrame {
     private javax.swing.JSpinner tf_edad;
     private javax.swing.JSpinner tf_edad1;
     private javax.swing.JTextField tf_edadbb;
+    private javax.swing.JLabel tiempo_p;
     private javax.swing.JComboBox<String> wombo_combo;
     // End of variables declaration//GEN-END:variables
     Usuario temp;
@@ -1384,4 +1592,8 @@ public class ola extends javax.swing.JFrame {
     DefaultMutableTreeNode nodo_seleccionado;
     int aux2 = 0;
     String play_actual = "";
+    Canciones cancion_seleccionada;
+    int seg, min, hora, deci, con;
+    boolean suspendido = false;
+
 }
